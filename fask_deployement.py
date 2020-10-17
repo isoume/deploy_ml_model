@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[305]:
-
-
 from flask import Flask
 from flask import request
 import pickle
@@ -13,34 +10,17 @@ import logging
 import json
 
 
-# In[306]:
-
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
-
-# In[307]:
-
-
 app = Flask(__name__)
-
-
-# In[316]:
-
 
 # The name of the pickle file
 file_name_model = "model.pkl"
 
-
-# In[309]:
-
-
 #open the binary of the tree decision model with pickle
 model = pickle.load(open(file_name_model, 'rb'))
-
-
-# In[310]:
 
 
 def response(status, message):
@@ -51,25 +31,9 @@ def response(status, message):
     }
 
 
-# In[311]:
-
-
-# Test the prediction method
-array = np.array([2, 2 , 3, 4])
-data = {'array': array.tolist() }
-data['predicted'] = model.predict(array.reshape(1,-1)).tolist()
-response(200, data)
-
-
-# In[312]:
-
-
 @app.route("/")
 def home():
     return response(200, "welcome")
-
-
-# In[313]:
 
 
 @app.route("/test/prediction")
@@ -80,9 +44,6 @@ def test():
     data['predicted'] = model.predict(array).tolist()
     print(" Data in test is : ", str(data))
     return response(200, data)
-
-
-# In[314]:
 
 
 @app.route("/predict", methods = ["POST", "GET"])
@@ -101,15 +62,5 @@ def predict():
     return response(200, data)
 
 
-# In[315]:
-
-
 if __name__ == "__main__":
-    app.run()
-
-
-# In[ ]:
-
-
-
-
+    app.run(host='0.0.0.0', port =5000)
